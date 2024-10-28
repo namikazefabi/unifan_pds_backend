@@ -18,8 +18,7 @@ type findTaskRequest = {
 
 type updateTaskRequest = {
     id: string,
-    description: string,
-    date_task: Date
+    status: boolean
 }
 
 export class TaskService {
@@ -64,7 +63,7 @@ export class TaskService {
         }
     }
     
-    async updateTask({ id, description, date_task } : updateTaskRequest): Promise<Task | Error> {
+    async updateTask({ id, status } : updateTaskRequest): Promise<Task | Error> {
         try {
             // SELECT * FROM tasks WHERE id = id LIMIT 1
             const task = await cursor.findOne({ where: {id}})
@@ -72,8 +71,7 @@ export class TaskService {
                 return new Error("Task not found!")
             }
             // Se houver uma nova descrição e/ou data informados pelo usuário vindos da requisição, a tarefa será atualizada com os novos dados; senão, os dados antigos serão mantidos.
-            task.description = description ? description : task.description
-            task.date_task = date_task ? date_task : task.date_task
+            task.status = status
             // UPDATE tasks WHERE id = id SET description = description, date_task = date_task
             await cursor.save(task)
             return task

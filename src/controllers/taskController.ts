@@ -44,8 +44,8 @@ export class TaskController {
 
     async updateTask(req: Request, res: Response){
         const { id } = req.params
-        const { description, date_task } = req.body
-        const result = await service.updateTask({id, description, date_task})
+        const { status } = req.body
+        const result = await service.updateTask({id, status})
         if (result instanceof Error){
             return res.status(404).json(result.message)
         }
